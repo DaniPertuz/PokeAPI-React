@@ -1,11 +1,11 @@
-import { PokemonLayout } from './components/pokemon';
+import { PokemonGrid, PokemonLayout } from './components/pokemon';
 import { AppTheme } from './theme';
 
 const PokemonApp = () => {
   return (
     <AppTheme>
       <PokemonLayout>
-        <div>PokemonApp</div>
+        <PokemonGrid />
       </PokemonLayout>
     </AppTheme>
   );
