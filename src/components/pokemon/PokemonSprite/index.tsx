@@ -1,5 +1,5 @@
 import { Box, Avatar } from '@mui/material';
-import { avatarContainer, avatarSize } from './styles';
+import { avatarContainer, avatarSize } from '../styles';
 
 interface Props {
   front: string;

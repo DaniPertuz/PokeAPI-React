@@ -1,6 +1,7 @@
 import { Grid } from '@mui/material';
-import { usePokemonData } from '../../hooks/usePokemonData';
-import { PokemonItem } from './PokemonItem';
+import { usePokemonData } from '../../../hooks';
+import { PokemonItem } from '../PokemonItem';
+import { PokemonListPagination } from '../PokemonListPagination';
 
 export const PokemonGrid = () => {
   const { pokemonItemDetails } = usePokemonData();
@@ -10,6 +11,7 @@ export const PokemonGrid = () => {
       {pokemonItemDetails?.map((pokemon) => (
         <PokemonItem key={pokemon.id} pokemon={pokemon} />
       ))}
+      <PokemonListPagination />
     </Grid>
   );
 };

@@ -1,9 +1,8 @@
 import ReactDOM from 'react-dom';
-import { Box, Modal, Typography } from '@mui/material';
-import { PokeItemResponse } from '../../interfaces/app-interfaces';
-import { capitalize } from '../../utils/constants';
-import { PokemonSprite } from '../pokemon';
-import { modalContainer } from './styles';
+import { Box, capitalize, Modal, Typography } from '@mui/material';
+import { PokeItemResponse } from '../../../interfaces/app-interfaces';
+import { PokemonSprite } from '../../pokemon';
+import { modalContainer } from '../styles';
 
 interface Props {
   pokemon: PokeItemResponse;
