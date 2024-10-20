@@ -19,3 +19,7 @@ export const pokemonCardImageStyle = () => ({
   transition: 'transform 0.3s, box-shadow 0.3s',
   '&:hover': { transform: 'scale(1.2)' }
 });
+
+export const avatarContainer = { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' };
+
+export const avatarSize = { height: 150, width: 150 };

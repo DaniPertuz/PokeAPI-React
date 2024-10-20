@@ -1,4 +1,5 @@
 import { Box, Avatar } from '@mui/material';
+import { avatarContainer, avatarSize } from './styles';
 
 interface Props {
   front: string;
@@ -7,12 +8,9 @@ interface Props {
 
 export const PokemonSprite = ({ front, back }: Props) => {
   return (
-    <Box sx={container}>
+    <Box sx={avatarContainer}>
       <Avatar src={front} sx={avatarSize} />
       <Avatar src={back} sx={avatarSize} />
     </Box>
   );
 };
-
-const avatarSize = { height: 150, width: 150 };
-const container = { display: 'flex', flexDirection: 'row', justifyContent: 'space-between' };
