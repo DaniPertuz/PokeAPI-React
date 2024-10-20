@@ -10,6 +10,9 @@ export const theme = createTheme({
     },
     error: {
       main: '#D13232'
+    },
+    info: {
+      main: '#FAFAFA'
     }
   }
 });
