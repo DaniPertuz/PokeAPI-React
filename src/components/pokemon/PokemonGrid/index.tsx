@@ -7,14 +7,14 @@ import { PokemonListPagination } from '../PokemonListPagination';
 import { gridContainer } from './styles';
 
 export const PokemonGrid = () => {
-  const { loading, pokemonItemDetails } = useContext(PokemonContext);
+  const { loading, filteredPokemon } = useContext(PokemonContext);
 
   return (
     <Grid container spacing={3} sx={gridContainer}>
       {loading ?
         <LoadingComponent />
         :
-        pokemonItemDetails.map((pokemon) => <PokemonItem key={pokemon.id} pokemon={pokemon} />)
+        filteredPokemon.map((pokemon) => <PokemonItem key={pokemon.id} pokemon={pokemon} />)
       }
       <PokemonListPagination />
     </Grid>
