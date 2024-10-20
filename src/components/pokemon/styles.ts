@@ -3,10 +3,7 @@ import { Theme } from '@mui/material';
 export const pokemonCardStyle = (theme: Theme) => ({
   alignItems: 'center',
   backgroundColor: theme.palette.secondary.main,
-  borderColor: theme.palette.error.main,
   borderRadius: 10,
-  borderStyle: 'solid',
-  borderWidth: 1,
   display: 'flex',
   height: '200px',
   justifyContent: 'center',
