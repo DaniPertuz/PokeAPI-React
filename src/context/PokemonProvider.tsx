@@ -46,23 +46,6 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ chil
 
   const goToPreviousPage = () => setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
 
-  const fetchPokemonListItem = (url: string) => {
-    setLoading(true);
-    fetchPokeAPIItem(url)
-      .then((resp) => {
-        if (!resp.ok) throw new Error('Error en la solicitud');
-        return resp.json();
-      })
-      .then((data) => {
-        setPokemonItemDetails(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  };
-
   useEffect(() => {
     fetchPokemonList(currentPage);
   }, [currentPage]);
@@ -74,7 +57,6 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ chil
       pokemonList,
       pokemonItemDetails,
       currentPage,
-      fetchPokemonListItem,
       goToNextPage,
       goToPreviousPage,
     }}>

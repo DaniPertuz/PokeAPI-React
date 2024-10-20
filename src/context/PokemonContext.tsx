@@ -7,7 +7,6 @@ interface PokemonContextType {
   pokemonList: PokeAPIResponse;
   pokemonItemDetails: PokeItemResponse[];
   currentPage: number;
-  fetchPokemonListItem: (url: string) => void;
   goToNextPage: () => void;
   goToPreviousPage: () => void;
 }
