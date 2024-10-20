@@ -13,6 +13,8 @@ interface Props {
 const modalRoot = document.getElementById('modal-root') || document.body;
 
 export const ModalComponent = ({ open, pokemon, handleClose }: Props) => {
+  const { abilities, name, sprites, types } = pokemon;
+
   const style = {
     position: 'absolute',
     top: '50%',
@@ -35,15 +37,15 @@ export const ModalComponent = ({ open, pokemon, handleClose }: Props) => {
     >
       <Box sx={style}>
         <Typography id="modal-pokemon-title" variant="h4" component="h2">
-          {capitalize(pokemon.name)}
+          {capitalize(name)}
         </Typography>
-        <PokemonSprite front={pokemon.sprites.front_default} back={pokemon.sprites.back_default} />
-        <PokemonSprite front={pokemon.sprites.front_shiny} back={pokemon.sprites.back_shiny} />
-        <Typography id="modal-pokemon-abilities"  variant="h6" sx={{ mt: 2 }}>
-          Habilidades: {pokemon.abilities.map(t => capitalize(t.ability.name)).join(', ')}
+        <PokemonSprite front={sprites.front_default} back={sprites.back_default} />
+        <PokemonSprite front={sprites.front_shiny} back={sprites.back_shiny} />
+        <Typography id="modal-pokemon-abilities" variant="h6" sx={{ mt: 2 }}>
+          Habilidades: {abilities.map(({ ability }) => capitalize(ability.name)).join(', ')}
         </Typography>
-        <Typography id="modal-pokemon-types"  variant="h6" sx={{ mt: 2 }}>
-          Tipo: {pokemon.types.map(t => capitalize(t.type.name)).join(', ')}
+        <Typography id="modal-pokemon-types" variant="h6" sx={{ mt: 2 }}>
+          Tipo: {types.map(({ type }) => capitalize(type.name)).join(', ')}
         </Typography>
       </Box>
     </Modal>,
