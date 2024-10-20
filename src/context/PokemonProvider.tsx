@@ -13,7 +13,9 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ chil
     results: []
   });
   const [pokemonItemDetails, setPokemonItemDetails] = useState<PokeItemResponse[]>([]);
+  const [filteredPokemon, setFilteredPokemon] = useState<PokeItemResponse[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchText, setSearchText] = useState('');
   const itemsPerPage = 20;
 
   const fetchPokemonList = async (page: number) => {
@@ -35,6 +37,7 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ chil
 
       const details = await Promise.all(detailsPromises);
       setPokemonItemDetails(details);
+      setFilteredPokemon(details);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -46,17 +49,37 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ chil
 
   const goToPreviousPage = () => setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
 
+  const filterPokemonList = (name: string) => {
+    setSearchText(name);
+    if (name === '') {
+      setFilteredPokemon(pokemonItemDetails);
+    } else {
+      const filtered = pokemonItemDetails.filter(pokemon =>
+        pokemon.name.toLowerCase().includes(name.toLowerCase())
+      );
+      setFilteredPokemon(filtered);
+    }
+  };
+
+  const clearSearchText = () => {
+    filterPokemonList('');
+  };
+
   useEffect(() => {
     fetchPokemonList(currentPage);
   }, [currentPage]);
 
   return (
     <PokemonContext.Provider value={{
+      currentPage,
       loading,
       error,
+      filteredPokemon,
       pokemonList,
       pokemonItemDetails,
-      currentPage,
+      searchText,
+      clearSearchText,
+      filterPokemonList,
       goToNextPage,
       goToPreviousPage,
     }}>
