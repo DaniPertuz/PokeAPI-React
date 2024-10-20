@@ -1,3 +1,5 @@
+import { Theme } from '@mui/material';
+
 export const modalContainer = {
   position: 'absolute',
   top: '50%',
@@ -9,4 +11,25 @@ export const modalContainer = {
   borderRadius: 10,
   boxShadow: 24,
   p: 4,
+};
+
+export const searchContainer = { alignItems: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center' };
+
+export const searchTextFieldStyle = (theme: Theme, displayTextField: boolean) => {
+  const inputFieldColor = theme.palette.info.main;
+  return {
+    '& .MuiInput-underline:before': {
+      borderBottomColor: inputFieldColor
+    },
+    '&:hover .MuiInput-underline:before': {
+      borderBottomColor: inputFieldColor
+    },
+    '& input': {
+      color: inputFieldColor
+    },
+    '&:not(.Mui-focused) .MuiInputLabel-root': {
+      color: inputFieldColor
+    },
+    display: displayTextField ? 'block' : 'none'
+  };
 };
