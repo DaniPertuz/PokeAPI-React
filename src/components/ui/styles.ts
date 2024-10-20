@@ -13,7 +13,7 @@ export const modalContainer = {
   p: 4,
 };
 
-export const searchContainer = { alignItems: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center' };
+export const searchContainer = { alignItems: 'center', display: 'flex', flexDirection: 'row', justifyContent: 'center', padding: 2 };
 
 export const searchTextFieldStyle = (theme: Theme, displayTextField: boolean) => {
   const inputFieldColor = theme.palette.info.main;
