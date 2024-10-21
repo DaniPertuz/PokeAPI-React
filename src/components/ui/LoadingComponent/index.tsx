@@ -1,9 +1,9 @@
 import { Box, CircularProgress } from '@mui/material';
-import { loadingContainer } from './styles';
+import { centerTemporalMessage } from '../styles';
 
 export const LoadingComponent = () => {
   return (
-    <Box sx={loadingContainer}>
+    <Box sx={centerTemporalMessage}>
       <CircularProgress size="3rem" />
     </Box>
   );
