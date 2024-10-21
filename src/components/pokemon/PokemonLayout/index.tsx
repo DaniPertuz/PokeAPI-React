@@ -3,7 +3,7 @@ import { Box, Toolbar } from '@mui/material';
 import { Navbar } from '../../ui';
 import { container, listContainer } from './styles';
 
-export const PokemonLayout = ({ children }: { children: ReactElement | ReactElement[]; }) => {
+const PokemonLayout = ({ children }: { children: ReactElement | ReactElement[]; }) => {
   return (
     <Box sx={container}>
       <Navbar />
@@ -14,3 +14,5 @@ export const PokemonLayout = ({ children }: { children: ReactElement | ReactElem
     </Box>
   );
 };
+
+export default PokemonLayout;

@@ -2,11 +2,11 @@ import { useContext } from 'react';
 import { Grid } from '@mui/material';
 import { PokemonContext } from '../../../context/PokemonContext';
 import { ErrorMessage, LoadingComponent } from '../../ui';
-import { PokemonItem } from '../PokemonItem';
-import { PokemonListPagination } from '../PokemonListPagination';
+import PokemonListPagination from '../PokemonListPagination';
+import PokemonItem from '../PokemonItem';
 import { gridContainer } from './styles';
 
-export const PokemonGrid = () => {
+const PokemonGrid = () => {
   const { error, loading, filteredPokemon } = useContext(PokemonContext);
 
   return (
@@ -25,4 +25,6 @@ export const PokemonGrid = () => {
       }
     </Grid>
   );
-};
+}
+
+export default PokemonGrid;

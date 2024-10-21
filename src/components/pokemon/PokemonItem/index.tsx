@@ -8,7 +8,7 @@ interface Props {
   pokemon: PokeItemResponse;
 }
 
-export const PokemonItem = ({ pokemon }: Props) => {
+const PokemonItem = ({ pokemon }: Props) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -18,10 +18,12 @@ export const PokemonItem = ({ pokemon }: Props) => {
     <>
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <Card sx={pokemonCardStyle} onClick={handleOpen}>
-          <Avatar src={pokemon?.sprites.front_default} sx={pokemonCardImageStyle} />
+          <Avatar src={pokemon.sprites.front_default} alt={pokemon.name} sx={pokemonCardImageStyle} />
         </Card>
       </Grid>
       <ModalComponent open={open} pokemon={pokemon} handleClose={handleClose} />
     </>
   );
 };
+
+export default PokemonItem;
