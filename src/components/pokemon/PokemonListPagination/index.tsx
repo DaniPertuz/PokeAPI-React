@@ -4,17 +4,17 @@ import { Grid, Box, Button, Typography } from '@mui/material';
 import { PokemonContext } from '../../../context/PokemonContext';
 import { mainContainer, paginationButton, paginationContainer } from './styles';
 
-export const PokemonListPagination = () => {
+const PokemonListPagination = () => {
   const { currentPage, pokemonList, goToNextPage, goToPreviousPage } = useContext(PokemonContext);
   return (
     <Grid item xs={12}>
       <Box sx={mainContainer}>
         <Box sx={paginationContainer}>
-          <Button variant="text" disabled={pokemonList.previous === null} onClick={goToPreviousPage}>
+          <Button aria-label="Previous" variant="text" disabled={pokemonList.previous === null} onClick={goToPreviousPage}>
             <ArrowCircleLeft sx={paginationButton} />
           </Button>
           <Typography>{currentPage}</Typography>
-          <Button variant="text" disabled={pokemonList.next === null} onClick={goToNextPage}>
+          <Button aria-label="Next" variant="text" disabled={pokemonList.next === null} onClick={goToNextPage}>
             <ArrowCircleRight sx={paginationButton} />
           </Button>
         </Box>
@@ -22,3 +22,5 @@ export const PokemonListPagination = () => {
     </Grid>
   );
 };
+
+export default PokemonListPagination;

@@ -1,16 +1,18 @@
 import { Box, Avatar } from '@mui/material';
-import { avatarContainer, avatarSize } from '../styles';
+import { avatarContainer, avatarSize } from './styles';
 
 interface Props {
   front: string;
   back: string;
 }
 
-export const PokemonSprite = ({ front, back }: Props) => {
+const PokemonSprite = ({ front, back }: Props) => {
   return (
     <Box sx={avatarContainer}>
-      <Avatar src={front} sx={avatarSize} />
-      <Avatar src={back} sx={avatarSize} />
+      <Avatar alt={"front_sprite"} src={front} sx={avatarSize} />
+      <Avatar alt={"back_sprite"} src={back} sx={avatarSize} />
     </Box>
   );
 };
+
+export default PokemonSprite;
