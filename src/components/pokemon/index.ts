@@ -1,5 +1,5 @@
-export * from './PokemonGrid';
-export * from './PokemonItem';
-export * from './PokemonLayout';
-export * from './PokemonListPagination';
-export * from './PokemonSprite';
+export { default as PokemonGrid } from './PokemonGrid';
+export { default as PokemonItem } from './PokemonItem';
+export { default as PokemonLayout } from './PokemonLayout';
+export { default as PokemonListPagination } from './PokemonListPagination';
+export { default as PokemonSprite } from './PokemonSprite';
