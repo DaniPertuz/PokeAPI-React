@@ -26,7 +26,11 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ chil
       const offset = (page - 1) * itemsPerPage;
       const resp = await fetchPokeAPI(itemsPerPage, offset);
 
-      if (!resp.ok) throw new Error('Error en la solicitud');
+      if (!resp.ok) {
+        setError('Error en la solicitud');
+        setLoading(false);
+        return;
+      }
 
       const data: PokeAPIResponse = await resp.json();
       setPokemonList(data);
