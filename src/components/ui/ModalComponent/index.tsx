@@ -1,7 +1,8 @@
 import ReactDOM from 'react-dom';
-import { Box, capitalize, Modal, Typography } from '@mui/material';
+import { Box, capitalize, Modal } from '@mui/material';
 import { PokeItemResponse } from '../../../interfaces/app-interfaces';
 import { PokemonSprite } from '../../pokemon';
+import { BodySmall, HeaderFour } from '../';
 import { modalContainer } from '../styles';
 
 interface Props {
@@ -13,7 +14,12 @@ interface Props {
 const modalRoot = document.getElementById('modal-root') || document.body;
 
 export const ModalComponent = ({ open, pokemon, handleClose }: Props) => {
+  if (!open) return null;
+
   const { abilities, name, sprites, types } = pokemon;
+
+  const abilityText = `Habilidades: ${abilities.map(({ ability }) => capitalize(ability.name)).join(', ')}`;
+  const typeText = `Tipo: ${types.map(({ type }) => capitalize(type.name)).join(', ')}`;
 
   return ReactDOM.createPortal(
     <Modal
@@ -23,17 +29,11 @@ export const ModalComponent = ({ open, pokemon, handleClose }: Props) => {
       aria-describedby="modal-pokemon-description"
     >
       <Box sx={modalContainer}>
-        <Typography id="modal-pokemon-title" variant="h4" component="h2">
-          {capitalize(name)}
-        </Typography>
+        <HeaderFour id={'modal-pokemon-title'} text={capitalize(name)} />
         <PokemonSprite front={sprites.front_default} back={sprites.back_default} />
         <PokemonSprite front={sprites.front_shiny} back={sprites.back_shiny} />
-        <Typography id="modal-pokemon-abilities" variant="h6" sx={{ mt: 2 }}>
-          Habilidades: {abilities.map(({ ability }) => capitalize(ability.name)).join(', ')}
-        </Typography>
-        <Typography id="modal-pokemon-types" variant="h6" sx={{ mt: 2 }}>
-          Tipo: {types.map(({ type }) => capitalize(type.name)).join(', ')}
-        </Typography>
+        <BodySmall id={'modal-pokemon-abilities'} text={abilityText} />
+        <BodySmall id={'modal-pokemon-types'} text={typeText} />
       </Box>
     </Modal>,
     modalRoot
