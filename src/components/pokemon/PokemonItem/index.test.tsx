@@ -1,40 +1,11 @@
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
+import { fetchPokeAPIItem } from '../../../api/pokeApi';
 import PokemonItem from '../PokemonItem';
-import { PokeItemResponse } from '../../../interfaces/app-interfaces';
 
-const mockPokemon: PokeItemResponse = {
-  id: 1, name: 'Bulbasaur',
-  abilities: [
-    {
-      ability: {
-        name: "overgrow",
-        url: "https://pokeapi.co/api/v2/ability/65/"
-      },
-      is_hidden: false,
-      slot: 1
-    }
-  ],
-  sprites: {
-    back_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
-    back_female: null,
-    back_shiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
-    back_shiny_female: null,
-    front_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-    front_female: null,
-    front_shiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png",
-    front_shiny_female: null,
-  },
-  types: [
-    {
-      slot: 1,
-      type: {
-        name: "grass",
-        url: "https://pokeapi.co/api/v2/type/12/"
-      }
-    }
-  ]
-};
+jest.mock('../../../api/pokeApi', () => ({
+  fetchPokeAPIItem: jest.fn(),
+}));
 
 jest.mock('../../ui/ModalComponent', () => ({
   ModalComponent: ({ open, handleClose }: { open: boolean, handleClose: () => void; }) => (
@@ -46,15 +17,38 @@ jest.mock('../../ui/ModalComponent', () => ({
   ),
 }));
 
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    ok: true,
+    status: 200,
+    json: () => Promise.resolve({ name: 'Bulbasaur', id: 1 }),
+  }) as Promise<Response>
+) as jest.Mock<Promise<Response>>;
+
 describe('PokemonItem', () => {
-  test('should render PokemonItem and open modal on click', () => {
-    render(<PokemonItem pokemon={mockPokemon} />);
+  beforeEach(() => {
+    (fetchPokeAPIItem as jest.Mock).mockResolvedValue({
+      json: jest.fn().mockResolvedValue({
+        id: 1,
+        name: 'Bulbasaur',
+        sprites: {
+          front_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+        },
+      }),
+    });
+  });
 
-    const avatar = screen.getByRole('img', { name: /bulbasaur/i });
-    expect(avatar).toBeInTheDocument();
+  test('should render PokemonItem and open modal on click', async () => {
+    await act(async () => {
+      render(<PokemonItem url="https://pokeapi.co/api/v2/pokemon/1" />);
+    });
 
-    fireEvent.click(avatar);
+    const avatars = screen.getAllByRole('img', { name: /bulbasaur/i });
+    expect(avatars.length).toBeGreaterThan(0);
+
+    fireEvent.click(avatars[0]);
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByAltText(/bulbasaur/i)).toBeInTheDocument();
   });
 });

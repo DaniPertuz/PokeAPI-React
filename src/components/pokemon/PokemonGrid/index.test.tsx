@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { PokemonContext } from '../../../context/PokemonContext';
-import { PokeItemResponse } from '../../../interfaces/app-interfaces';
 import PokemonGrid from '../PokemonGrid';
 
 jest.mock('../../ui', () => ({
@@ -10,8 +9,11 @@ jest.mock('../../ui', () => ({
 }));
 
 jest.mock('../PokemonItem', () => {
-  return ({ pokemon }: { pokemon: PokeItemResponse; }) => <div>{pokemon.name}</div>;
+  return ({ url }: { url: string; }) => {
+    return url ? <div>Bulbasaur</div> : <div>No Pokemon</div>;
+  };
 });
+
 
 jest.mock('../PokemonListPagination', () => () => <div>Pagination</div>);
 
@@ -21,7 +23,7 @@ const mockGoToNextPage = jest.fn();
 const mockGoToPreviousPage = jest.fn();
 
 const mockValue = {
-  pokemonList: { count: 100, next: 'https://pokeapi.co/api/v2/pokemon?offset=40&limit=20', previous: null, results: [] },
+  pokemonList: { count: 100, next: 'https://pokeapi.co/api/v2/pokemon?offset=40&limit=20', previous: null, results: [{ name: 'Bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1' }] },
   pokemonItemDetails: [],
   searchText: '',
   clearSearchText: mockClearSearchText,
@@ -34,7 +36,7 @@ const mockValue = {
 describe('PokemonGrid', () => {
   test('should render loading component when loading', () => {
     render(
-      <PokemonContext.Provider value={{ ...mockValue, loading: true, error: null, filteredPokemon: [] }}>
+      <PokemonContext.Provider value={{ ...mockValue, loading: true, error: null, pokemonList: { count: 100, next: 'https://pokeapi.co/api/v2/pokemon?offset=40&limit=20', previous: null, results: [] } }}>
         <PokemonGrid />
       </PokemonContext.Provider>
     );
@@ -44,7 +46,7 @@ describe('PokemonGrid', () => {
 
   test('should render error message when there is an error', () => {
     render(
-      <PokemonContext.Provider value={{ ...mockValue, loading: false, error: 'Error loading Pokémon', filteredPokemon: [] }}>
+      <PokemonContext.Provider value={{ ...mockValue, loading: false, error: 'Error loading Pokémon', pokemonList: { count: 100, next: 'https://pokeapi.co/api/v2/pokemon?offset=40&limit=20', previous: null, results: [] } }}>
         <PokemonGrid />
       </PokemonContext.Provider>
     );
@@ -58,40 +60,12 @@ describe('PokemonGrid', () => {
         ...mockValue,
         loading: false,
         error: null,
-        filteredPokemon: [
-          {
-            id: 1, name: 'Bulbasaur',
-            abilities: [
-              {
-                ability: {
-                  name: "overgrow",
-                  url: "https://pokeapi.co/api/v2/ability/65/"
-                },
-                is_hidden: false,
-                slot: 1
-              }
-            ],
-            sprites: {
-              back_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png",
-              back_female: null,
-              back_shiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png",
-              back_shiny_female: null,
-              front_default: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
-              front_female: null,
-              front_shiny: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/1.png",
-              front_shiny_female: null,
-            },
-            types: [
-              {
-                slot: 1,
-                type: {
-                  name: "grass",
-                  url: "https://pokeapi.co/api/v2/type/12/"
-                }
-              }
-            ]
-          }
-        ]
+        pokemonList: {
+          count: 100,
+          next: 'https://pokeapi.co/api/v2/pokemon?offset=40&limit=20',
+          previous: null,
+          results: [{ name: 'Bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1' }]
+        }
       }}>
         <PokemonGrid />
       </PokemonContext.Provider>
