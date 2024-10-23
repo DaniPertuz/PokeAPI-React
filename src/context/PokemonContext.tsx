@@ -5,7 +5,6 @@ interface PokemonContextType {
   currentPage: number;
   loading: boolean;
   error: string | null;
-  filteredPokemon: PokeItemResponse[];
   pokemonList: PokeAPIResponse;
   pokemonItemDetails: PokeItemResponse[];
   searchText: string;

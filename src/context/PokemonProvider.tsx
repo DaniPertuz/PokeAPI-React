@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { fetchPokeAPI, fetchPokeAPIItem } from '../api/pokeApi';
-import { PokeAPIResponse, PokeItemResponse, PokeResult } from '../interfaces/app-interfaces';
+import { fetchPokeAPI } from '../api/pokeApi';
+import { PokeAPIResponse, PokeItemResponse } from '../interfaces/app-interfaces';
 import { PokemonContext } from './PokemonContext';
 
 export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
@@ -12,8 +12,13 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ chil
     previous: null,
     results: []
   });
+  const [allPokemonList, setAllPokemonList] = useState<PokeAPIResponse>({
+    count: 0,
+    next: null,
+    previous: null,
+    results: []
+  });
   const [pokemonItemDetails, setPokemonItemDetails] = useState<PokeItemResponse[]>([]);
-  const [filteredPokemon, setFilteredPokemon] = useState<PokeItemResponse[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState('');
   const itemsPerPage = 20;
@@ -34,14 +39,28 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ chil
 
       const data: PokeAPIResponse = await resp.json();
       setPokemonList(data);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
 
-      const detailsPromises = data.results.map((pokemon: PokeResult) =>
-        fetchPokeAPIItem(pokemon.url).then(res => res.json())
-      );
+  const fetchAllPokemonList = async () => {
+    setLoading(true);
+    setError(null);
+    setPokemonItemDetails([]);
+    try {
+      const resp = await fetchPokeAPI(1500, 0);
 
-      const details = await Promise.all(detailsPromises);
-      setPokemonItemDetails(details);
-      setFilteredPokemon(details);
+      if (!resp.ok) {
+        setError('Error en la solicitud');
+        setLoading(false);
+        return;
+      }
+
+      const data: PokeAPIResponse = await resp.json();
+      setAllPokemonList(data);
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -56,18 +75,26 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ chil
   const filterPokemonList = (name: string) => {
     setSearchText(name);
     if (name === '') {
-      setFilteredPokemon(pokemonItemDetails);
+      fetchPokemonList(1);
     } else {
-      const filtered = pokemonItemDetails.filter(pokemon =>
+      const filtered = allPokemonList.results.filter(pokemon =>
         pokemon.name.toLowerCase().includes(name.toLowerCase())
       );
-      setFilteredPokemon(filtered);
+
+      setPokemonList({
+        ...pokemonList,
+        results: filtered
+      });
     }
   };
 
   const clearSearchText = () => {
     filterPokemonList('');
   };
+
+  useEffect(() => {
+    fetchAllPokemonList();
+  }, []);
 
   useEffect(() => {
     fetchPokemonList(currentPage);
@@ -78,7 +105,6 @@ export const PokemonProvider: React.FC<{ children: React.ReactNode; }> = ({ chil
       currentPage,
       loading,
       error,
-      filteredPokemon,
       pokemonList,
       pokemonItemDetails,
       searchText,

@@ -7,7 +7,7 @@ import PokemonItem from '../PokemonItem';
 import { gridContainer } from './styles';
 
 const PokemonGrid = () => {
-  const { error, loading, filteredPokemon } = useContext(PokemonContext);
+  const { error, loading, pokemonList } = useContext(PokemonContext);
 
   return (
     <Grid container spacing={3} sx={gridContainer}>
@@ -19,7 +19,7 @@ const PokemonGrid = () => {
           <ErrorMessage error={error} />
           :
           <>
-            {filteredPokemon.map((pokemon) => <PokemonItem key={pokemon.id} pokemon={pokemon} />)}
+            {pokemonList.results.map((pokemon) => <PokemonItem key={pokemon.name} url={pokemon.url} />)}
             <PokemonListPagination />
           </>
       }
